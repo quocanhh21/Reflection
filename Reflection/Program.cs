@@ -1,34 +1,10 @@
-﻿using AutoMapper;
-using System;
-using System.Reflection;
+﻿using System.Reflection;
 namespace Reflection
 {
     public class Program
     {
-        //public static void Copy(Customer customer,Employee employee)
-        //{
-        //    var parentProperties = customer.GetType().GetProperties();
-        //    var childProperties = employee.GetType().GetProperties();
-
-        //    foreach (var parentProperty in parentProperties)
-        //    {
-        //        foreach (var childProperty in childProperties)
-        //        {
-        //            if (parentProperty.Name == childProperty.Name && parentProperty.PropertyType== childProperty.PropertyType)
-        //            {
-        //                childProperty.SetValue(employee, parentProperty.GetValue(customer));
-        //                break;
-        //            }
-        //        }
-        //    }
-
-        //}
         private static void Main()
         {
-
-
-
-
             Customer customer = new Customer()
             {
                 Id = 1,
@@ -50,90 +26,45 @@ namespace Reflection
             };
             Employee employee = new Employee();
 
-
             Type T = Type.GetType("Reflection.Customer");
             Type TDes = Type.GetType("Reflection.Employee");
 
-            Console.WriteLine("Properties in Employe Class");
             PropertyInfo[] Tproperties = T.GetProperties();
-            Console.WriteLine("Properties in Employe Class");
             PropertyInfo[] TDesproperties = TDes.GetProperties();
+
+            Console.WriteLine("Properties in Customer Class");
             foreach (PropertyInfo property in Tproperties)
             {
-
                 Console.WriteLine(property.PropertyType.Name + " " + property.Name);
             }
+
             Console.WriteLine("------------------");
+
+            Console.WriteLine("Properties in Employe Class");
             foreach (PropertyInfo property in TDesproperties)
             {
-
                 Console.WriteLine(property.PropertyType.Name + " " + property.Name);
             }
+
             Console.WriteLine("---------------");
+
             foreach (var customerProperty in Tproperties)
             {
                 foreach (var employeeProperty in TDesproperties)
                 {
-                    if (customerProperty.PropertyType.Name == employeeProperty.PropertyType.Name)
+                    if (customerProperty.Name == employeeProperty.Name && customerProperty.PropertyType.Name == employeeProperty.PropertyType.Name)
                     {
-                        employeeProperty.SetValue(employee, customerProperty.GetValue(customer,null));
+                        employeeProperty.SetValue(employee, customerProperty.GetValue(customer));
                         break;
                     }
                 }
             }
+
             foreach (var property in TDesproperties)
             {
 
-                Console.WriteLine(property.PropertyType.Name + " " + property.Name + " " + property.GetValue(customer));
+                Console.WriteLine(property.PropertyType.Name + " " + property.Name + " " + property.GetValue(employee));
             }
-
-         
-          
-
-
-
-            ////Type T = Type.GetType("Reflection.Customer");
-            //Type T = typeof(Customer);
-
-
-            //Type TDes = typeof(Employee);
-            //PropertyInfo[] parentProperties = customer.GetType().GetProperties();
-            //PropertyInfo[] childProperties = employee.GetType().GetProperties();
-
-            ////Console.WriteLine("Properties in Customer Class");
-            ////PropertyInfo[] customerProperties = T.GetProperties();
-            ////Console.WriteLine("Properties in Employee Class");
-            ////PropertyInfo[] employeeProperties = TDes.GetProperties();
-            ////foreach (var property in parentProperties)
-            ////{
-
-            ////    Console.WriteLine(property.PropertyType.Name + " " + property.Name + " " + property.GetValue(customer));
-            ////}
-            //Console.WriteLine("------------");
-
-            //foreach (var property in childProperties)
-            //{
-
-            //    Console.WriteLine(property.PropertyType.Name + " " + property.Name + " " + property.GetValue(customer));
-            //}
-            //foreach (var customerProperty in customerProperties)
-            //{
-            //    foreach (var employeeProperty in employeeProperties)
-            //    {
-            //        if (customerProperty.PropertyType.Name == employeeProperty.PropertyType.Name)
-            //        {
-            //            employeeProperty.SetValue(employee, customerProperty.GetValue(customer));
-            //            break;
-            //        }
-            //    }
-            //}
-            //foreach (var property in employeeProperties)
-            //{
-
-            //    Console.WriteLine(property.PropertyType.Name + " " + property.Name + " " + property.GetValue(customer));
-            //}
-            ////Console.WriteLine();
-
         }
     }
     public class Customer
@@ -169,6 +100,7 @@ namespace Reflection
         public string prop14 { get; set; }
 
         public string prop15 { get; set; }
+
     }
     public class Employee
     {
