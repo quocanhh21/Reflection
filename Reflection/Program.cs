@@ -26,12 +26,23 @@ namespace Reflection
             };
             Customer customer2 = new Customer();
 
-            Type T = Type.GetType("Reflection.Customer");
-            
-            Type T2 = Type.GetType("Reflection.Customer");
+            Type T= typeof(Customer);
 
             PropertyInfo[] customerProperties = T.GetProperties();
-            PropertyInfo[] customerProperties2 = T2.GetProperties();
+
+            Console.WriteLine("Invoking a static method.");
+            Console.WriteLine("-------------------------");
+            T.InvokeMember("SayHello", BindingFlags.InvokeMethod | BindingFlags.Public |
+                BindingFlags.Static, null, null, new object[] { });
+
+            Console.WriteLine("------------------------");
+
+            Customer c = new Customer();
+            Console.WriteLine();
+            Console.WriteLine("Invoking an instance method.");
+            Console.WriteLine("----------------------------");
+            c.GetType().InvokeMember("AddUp", BindingFlags.InvokeMethod, null, c, new object[] { });
+            c.GetType().InvokeMember("AddUp", BindingFlags.InvokeMethod, null, c, new object[] { });
 
             Console.WriteLine("Properties in Customer ");
             foreach (PropertyInfo property in customerProperties)
@@ -42,7 +53,7 @@ namespace Reflection
             Console.WriteLine("------------------");
 
             Console.WriteLine("Properties in Customer2 ");
-            foreach (PropertyInfo property in customerProperties2)
+            foreach (PropertyInfo property in customerProperties)
             {
                 Console.WriteLine(property.PropertyType.Name + " " + property.Name + " " + property.GetValue(customer2));
             }
@@ -51,7 +62,7 @@ namespace Reflection
 
             foreach (var customerProperty in customerProperties)
             {
-                foreach (var employeeProperty in customerProperties2)
+                foreach (var employeeProperty in customerProperties)
                 {
                     if (customerProperty.Name == employeeProperty.Name && customerProperty.PropertyType.Name == employeeProperty.PropertyType.Name)
                     {
@@ -62,7 +73,7 @@ namespace Reflection
             }
 
             Console.WriteLine("Value after changing");
-            foreach (var property in customerProperties2)
+            foreach (var property in customerProperties)
             {
                 Console.WriteLine(property.PropertyType.Name + " " + property.Name + " " + property.GetValue(customer2));
             }
@@ -101,6 +112,19 @@ namespace Reflection
         public string prop14 { get; set; }
 
         public string prop15 { get; set; }
+
+        public static void SayHello()
+        {
+            Console.WriteLine("Hello");
+        }
+
+        int methodCalled = 0;
+
+        public void AddUp()
+        {
+            methodCalled++;
+            Console.WriteLine("AddUp Called {0} times", methodCalled);
+        }
 
     }
 }
